@@ -4,6 +4,7 @@ from django.shortcuts import render
 from .models import Tournament, Participant, SetResult, Game
 from .forms import RegisterForm, ResultForm
 from django.db import IntegrityError
+from django.db.models import Q
 from django.utils import timezone
 from tournament.functions import generate_games, generate_schedule, get_current_tournament, get_tournament_status
 
@@ -72,6 +73,37 @@ def participants(request):
         return render(request, 'tournament/participants.html', locals())
     else:
         return render(request, 'tournament/participants.html', locals())
+
+
+def rating(request):
+    tournament = get_current_tournament()
+    for p in tournament.participant_set.all():
+        p.win_sets = 0
+        p.win_balls = 0
+        p.games_left = 0
+        for g in Game.objects.filter(Q(participant1=p) | Q(participant2=p)):
+            if g.setresult_set.exists():
+                for r in g.setresult_set.all():
+                    if g.participant1 == p:
+                        if r.result1 > r.result2:
+                            p.win_sets += 1
+                        p.win_balls += r.result1 - r.result2
+                    else:
+                        if r.result2 > r.result1:
+                            p.win_sets += 1
+                        p.win_balls += r.result2 - r.result1
+            else:
+                p.games_left += 1
+        p.save()
+
+    participants = list(tournament.participant_set.all())
+    participants.sort(key=lambda elem: (elem.win_sets, elem.win_balls), reverse=True)
+
+    tournament_status = get_tournament_status(tournament)
+    if tournament_status == 1:
+        return render(request, 'tournament/rating.html', locals())
+    else:
+        return render(request, 'tournament/rating.html', locals())
 
 
 def games(request, game=None):

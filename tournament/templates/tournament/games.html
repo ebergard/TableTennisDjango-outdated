@@ -10,6 +10,7 @@
 {% endif %}
 {% if tournament_status == 1 or tournament_status == 2 %}
     <a class="nav-link" href="/games">Игры</a>
+    <a class="nav-link" href="/rating">Рейтинг</a>
 {% endif %}
 {% endblock %}
 
@@ -30,7 +31,7 @@
                 {% if g.setresult_set.all %}
                     <table style="width: 100%; align:justify;"><tr>
                     {% for r in g.setresult_set.all %}
-                        <td style="border: 0px">
+                        <td style="width: 20%; border: 0px">
                             {{ r.result1 }}
                         </td>
                     {% endfor %}
@@ -59,7 +60,7 @@
                 {% if g.setresult_set.all %}
                     <table style="width: 100%; align:justify;"><tr>
                     {% for r in g.setresult_set.all %}
-                        <td style="border: 0px">
+                        <td style="width: 20%; border: 0px">
                             {{ r.result2 }}
                         </td>
                     {% endfor %}

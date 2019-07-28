@@ -32,6 +32,9 @@ class Participant(models.Model):
     first_name = models.CharField('first name', max_length=20)
     last_name = models.CharField('last name', max_length=20)
     drawn_number = models.SmallIntegerField('drawn number', blank=True, null=True)
+    win_sets = models.IntegerField(default=0)
+    win_balls = models.IntegerField(default=0)
+    games_left = models.IntegerField(default=10)
 
     def __str__(self):
         return "{} {}".format(self.first_name, self.last_name)
