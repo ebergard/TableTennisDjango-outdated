@@ -69,10 +69,10 @@ def failure(request):
 def participants(request):
     tournament = get_current_tournament()
     tournament_status = get_tournament_status(tournament)
-    if tournament_status == 1:
+    if tournament_status in (0, 1, 2):
         return render(request, 'tournament/participants.html', locals())
     else:
-        return render(request, 'tournament/participants.html', locals())
+        return HttpResponse("<h2>Participants list is not available</h2>")
 
 
 def rating(request):
@@ -100,10 +100,10 @@ def rating(request):
     participants.sort(key=lambda elem: (elem.win_sets, elem.win_balls), reverse=True)
 
     tournament_status = get_tournament_status(tournament)
-    if tournament_status == 1:
+    if tournament_status in (0, 1, 2):
         return render(request, 'tournament/rating.html', locals())
     else:
-        return render(request, 'tournament/rating.html', locals())
+        return HttpResponse("<h2>Participants rating is not available</h2>")
 
 
 def games(request, game=None):
@@ -128,10 +128,10 @@ def games(request, game=None):
     else:
         form = ResultForm()
 
-    if tournament_status == 1:
+    if tournament_status in (0, 1, 2):
         return render(request, 'tournament/games.html', locals())
     else:
-        return render(request, 'tournament/games.html', locals())
+        return HttpResponse("<h2>Games list is not available</h2>")
 
 
 def before_draw(request):

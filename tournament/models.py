@@ -1,9 +1,11 @@
 from django.db import models
 from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
 from datetime import datetime, date
+from pandas.tseries.offsets import BDay
 
 
-# Create your models here.
 class Tournament(models.Model):
     single = models.BooleanField('if the tournament is single', default=True)
 
@@ -21,6 +23,19 @@ class Tournament(models.Model):
 
     def __str__(self):
         return "{} - {}".format(date.strftime(self.start_date, '%d %B %Y'), date.strftime(self.end_date, '%d %B %Y'))
+
+    def clean(self):
+        if self.reg_end <= timezone.now():
+            raise ValidationError(_('Registration end time cannot be in the past'))
+        if self.draw_time <= self.reg_end:
+            raise ValidationError(_('Draw time cannot be earlier than registration end time'))
+        if self.start_date <= self.draw_time.date():
+            raise ValidationError(_('Start date cannot be earlier than draw date'))
+        if self.start_date_playoff <= self.draw_time.date() + BDay(self.games_per_person):
+            raise ValidationError(_('Start date of play-off cannot be earlier than {} business '
+                                    'days after start date'.format(self.games_per_person)))
+        if self.end_date < self.start_date_playoff + BDay(2):
+            raise ValidationError(_('End date cannot be earlier than 2 business days after start date of play-off'))
 
     def number_of_participants(self):
         return self.participant_set.count()
@@ -60,24 +75,22 @@ class Participant(models.Model):
 
         super(Participant, self).save(*args, **kwargs)
 
-    def number_of_games(self):
-        return self.participant1.count() + self.participant2.count()
-
 
 class Game(models.Model):
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
     id1 = models.SmallIntegerField('participant1 drawn number')
     id2 = models.SmallIntegerField('participant2 drawn number')
-    participant1 = models.ForeignKey(Participant, on_delete=models.CASCADE, related_name='participant1', blank=True, null=True)
-    participant2 = models.ForeignKey(Participant, on_delete=models.CASCADE, related_name='participant2', blank=True, null=True)
+    participant1 = models.ForeignKey(Participant, on_delete=models.CASCADE, related_name='participant1',
+                                     blank=True, null=True)
+    participant2 = models.ForeignKey(Participant, on_delete=models.CASCADE, related_name='participant2',
+                                     blank=True, null=True)
     game_date = models.DateField('game date', blank=True, null=True)
     start_time = models.TimeField('game start time', blank=True, null=True)
 
     def __str__(self):
-        if self.participant1 and self.participant2:
-            return "{} vs. {}".format(self.participant1, self.participant2)
-        else:
-            return "{} vs. {}".format(self.id1, self.id2)
+        p1 = self.participant1 if self.participant1 else self.id1
+        p2 = self.participant2 if self.participant2 else self.id2
+        return "{} vs. {}".format(p1, p2)
 
     def __eq__(self, other):
         if isinstance(other, self.__class__):
