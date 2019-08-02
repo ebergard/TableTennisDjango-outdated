@@ -24,6 +24,7 @@
             <th scope="col">Имя</th>
             <th scope="col">Фамилия</th>
             <th scope="col">Email</th>
+            <th scope="col">Номер на жеребьёвке</th>
         </tr>
     </thead>
     <tbody>
@@ -33,6 +34,7 @@
             <td>{{ p.first_name }}</td>
             <td>{{ p.last_name }}</td>
             <td>{{ p.email }}</td>
+            <td>{{ p.drawn_number }}</td>
         </tr>
     {% endfor %}
     </tbody>

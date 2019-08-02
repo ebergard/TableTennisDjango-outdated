@@ -50,6 +50,7 @@ class Participant(models.Model):
     win_sets = models.IntegerField(default=0)
     win_balls = models.IntegerField(default=0)
     games_left = models.IntegerField(default=10)
+    initialized = models.BooleanField(default=False)
 
     def __str__(self):
         return "{} {}".format(self.first_name, self.last_name)
@@ -63,7 +64,7 @@ class Participant(models.Model):
         return self.email != other.email
 
     def save(self, *args, **kwargs):
-        if self.drawn_number is not None:
+        if not self.initialized and self.drawn_number:
             games = self.tournament.game_set.all()
             for game in games:
                 if game.id1 == self.drawn_number:
@@ -72,24 +73,32 @@ class Participant(models.Model):
                 if game.id2 == self.drawn_number:
                     game.participant2 = self
                     game.save(first_call=False)
+            self.initialized = True
 
         super(Participant, self).save(*args, **kwargs)
+
+    def clean(self):
+        if self.drawn_number is not None:
+            drawn_numbers = [p.drawn_number for p in self.tournament.participant_set.all() if p != self]
+            if self.drawn_number in drawn_numbers:
+                raise ValidationError(_("Number '{}' is already assigned "
+                                        "to another participant".format(self.drawn_number)))
 
 
 class Game(models.Model):
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
     id1 = models.SmallIntegerField('participant1 drawn number')
     id2 = models.SmallIntegerField('participant2 drawn number')
-    participant1 = models.ForeignKey(Participant, on_delete=models.CASCADE, related_name='participant1',
+    participant1 = models.ForeignKey(Participant, on_delete=models.DO_NOTHING, related_name='participant1',
                                      blank=True, null=True)
-    participant2 = models.ForeignKey(Participant, on_delete=models.CASCADE, related_name='participant2',
+    participant2 = models.ForeignKey(Participant, on_delete=models.DO_NOTHING, related_name='participant2',
                                      blank=True, null=True)
     game_date = models.DateField('game date', blank=True, null=True)
     start_time = models.TimeField('game start time', blank=True, null=True)
 
     def __str__(self):
-        p1 = self.participant1 if self.participant1 else self.id1
-        p2 = self.participant2 if self.participant2 else self.id2
+        p1 = self.participant1 or self.id1
+        p2 = self.participant2 or self.id2
         return "{} vs. {}".format(p1, p2)
 
     def __eq__(self, other):
@@ -110,6 +119,12 @@ class Game(models.Model):
                 raise ValidationError("Duplicate game : {}".format(self), code=2)
         super(Game, self).save(*args, **kwargs)
 
+    def get_p1(self):
+        return self.participant1 or self.id1
+
+    def get_p2(self):
+        return self.participant2 or self.id2
+
 
 class SetResult(models.Model):
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
@@ -118,4 +133,28 @@ class SetResult(models.Model):
     result2 = models.SmallIntegerField('participant2 result')
 
     def __str__(self):
-        return "{} {} set result".format(self.game, self.set_number)
+        return "{} {} set result: {} {}".format(self.game, self.set_number, self.result1, self.result2)
+
+    def save(self, *args, **kwargs):
+        if self.result1 > self.result2:
+            if self.result1 - self.result2 > 2:
+                if self.result1 != 11:
+                    raise ValidationError("Result must be 11")
+            elif self.result1 - self.result2 == 1:
+                raise ValidationError("Point difference must be at least 2")
+            else:
+                if self.result1 < 11:
+                    raise ValidationError("Result must be at least 11")
+        elif self.result2 > self.result1:
+            if self.result2 - self.result1 > 2:
+                if self.result2 != 11:
+                    raise ValidationError("Result must be 11")
+            elif self.result2 - self.result1 == 1:
+                raise ValidationError("Point difference must be at least 2")
+            else:
+                if self.result2 < 11:
+                    raise ValidationError("Result must be at least 11")
+        else:
+            raise ValidationError("Results cannot be equal")
+
+        super(SetResult, self).save(*args, **kwargs)

@@ -94,7 +94,7 @@ def rating(request):
                         p.win_balls += r.result2 - r.result1
             else:
                 p.games_left += 1
-        p.save()
+        p.save(update_fields=["win_sets", "win_balls", "games_left"])
 
     participants = list(tournament.participant_set.all())
     participants.sort(key=lambda elem: (elem.win_sets, elem.win_balls), reverse=True)
@@ -116,12 +116,12 @@ def games(request, game=None):
         if form.is_valid():
             game = Game.objects.get(pk=game)
             for i in range(1, 6):
-                p = SetResult(game=game,
+                s = SetResult(game=game,
                               set_number=i,
                               result1=form.cleaned_data['set{}res1'.format(i)],
                               result2=form.cleaned_data['set{}res2'.format(i)])
                 try:
-                    p.save()
+                    s.save()
                 except IntegrityError:
                     return HttpResponseRedirect('/failure')
             return HttpResponseRedirect('/games')
