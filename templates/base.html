@@ -19,8 +19,18 @@
               <nav class="nav nav-masthead justify-content-center">
                 <a class="nav-link" href="/">Главная</a>
                   {% block menu %}{% endblock %}
-                <a class="nav-link" href="#">Правила</a>
-                <a class="nav-link" href="#">Прошлые турниры</a>
+                <a class="nav-link" href="/#">Правила</a>
+                <a class="nav-link" href="/#">Прошлые турниры</a>
+                {% if request.user.is_authenticated %}
+                  {% if request.user.first_name %}
+                    <a class="nav-link" href="/accounts/me/">{{ request.user.first_name }}</a>
+                  {% else %}
+                    <a class="nav-link" href="/accounts/me/">{{ request.user }}</a>
+                  {% endif %}
+                  <a class="nav-link" href="/accounts/logout/"><img src="{% static "tournament/door-exit.png"%}" style="filter: invert(70%)"></a>
+                {% else %}
+                  <a class="nav-link" href="/accounts/login/">Войти</a>
+                {% endif %}
               </nav>
             </div>
         </header>
@@ -31,7 +41,9 @@
 
         <footer class="mastfoot mt-auto">
             <div class="inner">
-              <p>Ping-pong tournaments site for <a href="http://www.appliedtech.ru" target="_blank">Applied Technologies</a>, by <a href="https://vk.com/ebergard" target="_blank">@kebergard</a>.</p>
+              <p>Ping-pong tournaments site for <a href="http://www.appliedtech.ru" target="_blank">Applied Technologies</a>, by <a href="https://vk.com/ebergard" target="_blank">Ksenia Ebergard</a>.
+              </br>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
+              </p>
             </div>
         </footer>
     </div>

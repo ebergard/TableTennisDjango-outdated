@@ -2,9 +2,13 @@
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from .models import Tournament, Participant, SetResult, Game
-from .forms import RegisterForm, ResultForm
+from .forms import RegisterForm, ResultForm, UserCreationForm
 from django.db import IntegrityError
 from django.db.models import Q
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from tournament.functions import generate_games, generate_schedule, get_current_tournament, get_tournament_status
 
@@ -139,3 +143,83 @@ def before_draw(request):
     games = generate_games()
     generate_schedule(games)
     return HttpResponse("Schedule generated")
+
+
+def account_register(request):
+
+    tournament = get_current_tournament()
+    tournament_status = get_tournament_status(tournament)
+
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = User.objects.create_user(username=form.cleaned_data['username'],
+                                            email=form.cleaned_data['email'],
+                                            first_name=form.cleaned_data['first_name'],
+                                            last_name=form.cleaned_data['last_name'],
+                                            password=form.cleaned_data['password1'])
+            login(request, user)
+            return HttpResponseRedirect('/')
+    else:
+        form = UserCreationForm()
+
+    return render(request, 'auth/account_register.html', locals())
+
+
+def account_login(request):
+
+    tournament = get_current_tournament()
+    tournament_status = get_tournament_status(tournament)
+
+    if request.method == 'POST':
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            user = authenticate(request,
+                                username=form.cleaned_data['username'],
+                                password=form.cleaned_data['password'])
+            if user is not None:
+                login(request, user)
+                return HttpResponseRedirect('/')
+            else:
+                return HttpResponseRedirect('/failure')
+    else:
+        form = AuthenticationForm()
+
+    form.fields["username"].widget.attrs["class"] = "form-control"
+    form.fields["password"].widget.attrs["class"] = "form-control"
+    return render(request, 'auth/account_login.html', locals())
+
+
+def account_logout(request):
+    logout(request)
+    return HttpResponseRedirect('/')
+
+
+@login_required
+def me(request, game=None):
+    tournament = get_current_tournament()
+    tournament_status = get_tournament_status(tournament)
+    p = Participant.objects.get(first_name=request.user.first_name)
+    games = tournament.game_set.filter(Q(participant1=p) | Q(participant2=p)).order_by('game_date', 'start_time')
+
+    if request.method == 'POST':
+        form = ResultForm(request.POST)
+        if form.is_valid():
+            game = Game.objects.get(pk=game)
+            for i in range(1, 6):
+                s = SetResult(game=game,
+                              set_number=i,
+                              result1=form.cleaned_data['set{}res1'.format(i)],
+                              result2=form.cleaned_data['set{}res2'.format(i)])
+                try:
+                    s.save()
+                except IntegrityError:
+                    return HttpResponseRedirect('/failure')
+            return HttpResponseRedirect('/accounts/me/')
+    else:
+        form = ResultForm()
+
+    if tournament_status in (0, 1, 2):
+        return render(request, 'auth/me.html', locals())
+    else:
+        return HttpResponse("<h2>Games list is not available</h2>")
