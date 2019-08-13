@@ -2,18 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="24b369cb-1d1d-4f57-ad6b-0d4b1a661e01" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/tournament/static/tournament/door-exit.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tournament/templates/auth/account_login.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tournament/templates/auth/account_register.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tournament/templates/auth/me.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tournament/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tournament/static/tournament/cover.css" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/static/tournament/cover.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tournament/templates/auth/me.html" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/templates/auth/me.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tournament/templates/tournament/games.html" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/templates/tournament/games.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tournament/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tournament/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/tournament/views.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -72,13 +65,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/tournament/templates/tournament/games.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="804">
-              <caret line="56" column="26" selection-start-line="56" selection-start-column="26" selection-end-line="56" selection-end-column="26" />
+            <state relative-caret-position="-255">
+              <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
               <folding>
-                <element signature="e#995#1030#0" expanded="true" />
-                <element signature="e#1119#1150#0" expanded="true" />
-                <element signature="e#2121#2156#0" expanded="true" />
-                <element signature="e#2245#2276#0" expanded="true" />
+                <element signature="e#845#894#0" expanded="true" />
+                <element signature="e#998#1029#0" expanded="true" />
+                <element signature="e#1186#1205#0" expanded="true" />
+                <element signature="e#1228#1247#0" expanded="true" />
+                <element signature="e#1270#1289#0" expanded="true" />
+                <element signature="e#1326#1345#0" expanded="true" />
+                <element signature="e#1525#1560#0" expanded="true" />
+                <element signature="e#1649#1680#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -99,23 +96,18 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/tournament/templates/auth/me.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="18" column="3" lean-forward="true" selection-start-line="18" selection-start-column="3" selection-end-line="18" selection-end-column="3" />
+            <state relative-caret-position="-34">
+              <caret line="58" column="35" selection-start-line="58" selection-start-column="35" selection-end-line="58" selection-end-column="35" />
               <folding>
                 <element signature="e#1006#1041#0" expanded="true" />
                 <element signature="e#1130#1161#0" expanded="true" />
+                <element signature="e#1976#1995#0" expanded="true" />
+                <element signature="e#2018#2037#0" expanded="true" />
+                <element signature="e#2060#2079#0" expanded="true" />
+                <element signature="e#2116#2135#0" expanded="true" />
                 <element signature="e#2132#2167#0" expanded="true" />
                 <element signature="e#2256#2287#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/base.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="36" lean-forward="true" selection-start-line="36" selection-end-line="36" />
             </state>
           </provider>
         </entry>
@@ -225,9 +217,9 @@
         <option value="$PROJECT_DIR$/tournament/templates/auth/account_register.html" />
         <option value="$PROJECT_DIR$/tournament/templates/auth/account_login.html" />
         <option value="$PROJECT_DIR$/tournament/static/tournament/cover.css" />
-        <option value="$PROJECT_DIR$/templates/base.html" />
         <option value="$PROJECT_DIR$/tournament/views.py" />
         <option value="$PROJECT_DIR$/tournament/urls.py" />
+        <option value="$PROJECT_DIR$/templates/base.html" />
         <option value="$PROJECT_DIR$/tournament/templates/tournament/games.html" />
         <option value="$PROJECT_DIR$/tournament/templates/auth/me.html" />
       </list>
@@ -523,7 +515,14 @@
       <option name="project" value="LOCAL" />
       <updated>1564767451953</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="auth is added">
+      <created>1565374966947</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1565374966948</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -546,7 +545,7 @@
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Database Changes" order="0" weight="0.32843137" />
       <window_info anchor="bottom" id="Terminal" order="1" sideWeight="0.58035713" weight="0.41666666" />
-      <window_info anchor="bottom" id="Event Log" order="2" sideWeight="0.50818455" side_tool="true" visible="true" weight="0.1633987" />
+      <window_info anchor="bottom" id="Event Log" order="2" sideWeight="0.50818455" side_tool="true" weight="0.26633987" />
       <window_info anchor="bottom" id="Version Control" order="3" sideWeight="0.49925596" weight="0.22712418" />
       <window_info anchor="bottom" id="Python Console" order="4" weight="0.32843137" />
       <window_info anchor="bottom" id="Docker" order="5" show_stripe_button="false" />
@@ -572,7 +571,8 @@
     <MESSAGE value="django version" />
     <MESSAGE value="rating is added" />
     <MESSAGE value="validation is added" />
-    <option name="LAST_COMMIT_MESSAGE" value="validation is added" />
+    <MESSAGE value="auth is added" />
+    <option name="LAST_COMMIT_MESSAGE" value="auth is added" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/ping$0_before_draw__1_.coverage" NAME="0_before_draw (1) Coverage Results" MODIFIED="1555960663638" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tournament" />
@@ -867,13 +867,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/base.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="36" lean-forward="true" selection-start-line="36" selection-end-line="36" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tournament/views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="56">
@@ -894,19 +887,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tournament/templates/tournament/games.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="804">
-          <caret line="56" column="26" selection-start-line="56" selection-start-column="26" selection-end-line="56" selection-end-column="26" />
-          <folding>
-            <element signature="e#995#1030#0" expanded="true" />
-            <element signature="e#1119#1150#0" expanded="true" />
-            <element signature="e#2121#2156#0" expanded="true" />
-            <element signature="e#2245#2276#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tournament/urls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="306">
@@ -917,13 +897,41 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/templates/base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="319">
+          <caret line="54" lean-forward="true" selection-start-line="54" selection-end-line="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tournament/templates/tournament/games.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-255">
+          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
+          <folding>
+            <element signature="e#845#894#0" expanded="true" />
+            <element signature="e#998#1029#0" expanded="true" />
+            <element signature="e#1186#1205#0" expanded="true" />
+            <element signature="e#1228#1247#0" expanded="true" />
+            <element signature="e#1270#1289#0" expanded="true" />
+            <element signature="e#1326#1345#0" expanded="true" />
+            <element signature="e#1525#1560#0" expanded="true" />
+            <element signature="e#1649#1680#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/tournament/templates/auth/me.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="18" column="3" lean-forward="true" selection-start-line="18" selection-start-column="3" selection-end-line="18" selection-end-column="3" />
+        <state relative-caret-position="-34">
+          <caret line="58" column="35" selection-start-line="58" selection-start-column="35" selection-end-line="58" selection-end-column="35" />
           <folding>
             <element signature="e#1006#1041#0" expanded="true" />
             <element signature="e#1130#1161#0" expanded="true" />
+            <element signature="e#1976#1995#0" expanded="true" />
+            <element signature="e#2018#2037#0" expanded="true" />
+            <element signature="e#2060#2079#0" expanded="true" />
+            <element signature="e#2116#2135#0" expanded="true" />
             <element signature="e#2132#2167#0" expanded="true" />
             <element signature="e#2256#2287#0" expanded="true" />
           </folding>
