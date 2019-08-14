@@ -202,22 +202,23 @@ def me(request, game=None):
     p = Participant.objects.get(first_name=request.user.first_name)
     games = tournament.game_set.filter(Q(participant1=p) | Q(participant2=p)).order_by('game_date', 'start_time')
 
+    for g in games:
+        g.form = ResultForm()
+
     if request.method == 'POST':
-        form = ResultForm(request.POST)
-        if form.is_valid():
-            game = Game.objects.get(pk=game)
-            for i in range(1, 6):
-                s = SetResult(game=game,
-                              set_number=i,
-                              result1=form.cleaned_data['set{}res1'.format(i)],
-                              result2=form.cleaned_data['set{}res2'.format(i)])
-                try:
-                    s.save()
-                except IntegrityError:
-                    return HttpResponseRedirect('/failure')
-            return HttpResponseRedirect('/accounts/me/')
-    else:
-        form = ResultForm()
+        game = Game.objects.get(pk=game)
+        for g in games:
+            if g == game:
+                g.form = ResultForm(request.POST)
+                if g.form.is_valid():
+                    for i in range(1, 6):
+                        s = SetResult(game=game,
+                                      set_number=i,
+                                      result1=g.form.cleaned_data['set{}res1'.format(i)],
+                                      result2=g.form.cleaned_data['set{}res2'.format(i)])
+                        s.save()
+                    return HttpResponseRedirect('/accounts/me/')
+                break
 
     if tournament_status in (0, 1, 2):
         return render(request, 'auth/me.html', locals())

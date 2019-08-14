@@ -22,7 +22,7 @@
     {% for g in games %}
         <form action="{% url 'me_game' g.id %}" method="post">
         {% csrf_token %}
-        {{ form.non_field_errors }}
+        {{ g.form.non_field_errors }}
         <tr>
             <th scope="row">{{ g.game_date }}</th>
             <td>{{ g.start_time|time:'H:i' }}</td>
@@ -38,16 +38,16 @@
                     </tr></table>
                 {% else %}
                     <div class="form-group">
-                        {{ form.set1res1.errors }}
-                        {{ form.set2res1.errors }}
-                        {{ form.set3res1.errors }}
-                        {{ form.set4res1.errors }}
-                        {{ form.set5res1.errors }}
-                        {{ form.set1res1 }}
-                        {{ form.set2res1 }}
-                        {{ form.set3res1 }}
-                        {{ form.set4res1 }}
-                        {{ form.set5res1 }}
+                        {{ g.form.set1res1.errors }}
+                        {{ g.form.set2res1.errors }}
+                        {{ g.form.set3res1.errors }}
+                        {{ g.form.set4res1.errors }}
+                        {{ g.form.set5res1.errors }}
+                        {{ g.form.set1res1 }}
+                        {{ g.form.set2res1 }}
+                        {{ g.form.set3res1 }}
+                        {{ g.form.set4res1 }}
+                        {{ g.form.set5res1 }}
                     </div>
                 {% endif %}
             </td>
@@ -67,16 +67,16 @@
                     </tr></table>
                 {% else %}
                     <div class="form-group">
-                        {{ form.set1res2 }}
-                        {{ form.set2res2 }}
-                        {{ form.set3res2 }}
-                        {{ form.set4res2 }}
-                        {{ form.set5res2 }}
-                        {{ form.set1res2.errors }}
-                        {{ form.set2res2.errors }}
-                        {{ form.set3res2.errors }}
-                        {{ form.set4res2.errors }}
-                        {{ form.set5res2.errors }}
+                        {{ g.form.set1res2 }}
+                        {{ g.form.set2res2 }}
+                        {{ g.form.set3res2 }}
+                        {{ g.form.set4res2 }}
+                        {{ g.form.set5res2 }}
+                        {{ g.form.set1res2.errors }}
+                        {{ g.form.set2res2.errors }}
+                        {{ g.form.set3res2.errors }}
+                        {{ g.form.set4res2.errors }}
+                        {{ g.form.set5res2.errors }}
                     </div>
                     <input type="submit" value="Отправить результат" class="btn btn-secondary btn-sm">
                 {% endif %}

@@ -51,23 +51,23 @@ class ResultForm(forms.Form):
             if r1 > r2:
                 if r1 - r2 > 2:
                     if r1 != 11:
-                        self.add_error(f1, "Result must be 11")
+                        self.add_error(f1, "Set #{}: Result must be 11".format(i))
                 elif r1 - r2 == 1:
-                    self.add_error(f1, "Point difference must be at least 2")
+                    self.add_error(f1, "Set #{}: Point difference must be at least 2".format(i))
                 else:
                     if r1 < 11:
-                        self.add_error(f1, "Result must be at least 11")
+                        self.add_error(f1, "Set #{}: Result must be at least 11".format(i))
             elif r2 > r1:
                 if r2 - r1 > 2:
                     if r2 != 11:
-                        self.add_error(f2, "Result must be 11")
+                        self.add_error(f1, "Set #{}: Result must be 11".format(i))
                 elif r2 - r1 == 1:
-                    self.add_error(f2, "Point difference must be at least 2")
+                    self.add_error(f1, "Set #{}: Point difference must be at least 2".format(i))
                 else:
                     if r2 < 11:
-                        self.add_error(f2, "Result must be at least 11")
+                        self.add_error(f1, "Set #{}: Result must be at least 11".format(i))
             else:
-                self.add_error(f1, ValidationError(_("Results cannot be equal")))
+                self.add_error(f1, ValidationError(_("Set #{}: Results cannot be equal".format(i))))
 
 
 class UserCreationForm(forms.ModelForm):
