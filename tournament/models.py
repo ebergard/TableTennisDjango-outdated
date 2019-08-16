@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
@@ -28,12 +29,12 @@ class Tournament(models.Model):
         if self.reg_end <= timezone.now():
             raise ValidationError(_('Registration end time cannot be in the past'))
         if self.draw_time <= self.reg_end:
-            raise ValidationError(_('Draw time cannot be earlier than registration end time'))
+            raise ValidationError(_('Draw time cannot be earlier or equal the registration end time'))
         if self.start_date <= self.draw_time.date():
-            raise ValidationError(_('Start date cannot be earlier than draw date'))
-        if self.start_date_playoff <= self.draw_time.date() + BDay(self.games_per_person):
+            raise ValidationError(_('Start date cannot be earlier or equal the draw date'))
+        if self.start_date_playoff < self.start_date + BDay(self.games_per_person + 1):
             raise ValidationError(_('Start date of play-off cannot be earlier than {} business '
-                                    'days after start date'.format(self.games_per_person)))
+                                    'days after start date'.format(self.games_per_person + 1)))
         if self.end_date < self.start_date_playoff + BDay(2):
             raise ValidationError(_('End date cannot be earlier than 2 business days after start date of play-off'))
 
@@ -41,11 +42,8 @@ class Tournament(models.Model):
         return self.participant_set.count()
 
 
-class Participant(models.Model):
+class Participant(User):
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
-    email = models.EmailField('email', primary_key=True)
-    first_name = models.CharField('first name', max_length=20)
-    last_name = models.CharField('last name', max_length=20)
     drawn_number = models.SmallIntegerField('drawn number', blank=True, null=True)
     win_sets = models.IntegerField(default=0)
     win_balls = models.IntegerField(default=0)
@@ -57,11 +55,11 @@ class Participant(models.Model):
 
     def __eq__(self, other):
         if isinstance(other, self.__class__):
-            return self.email == other.email
+            return self.username == other.username
         return False
 
     def __ne__(self, other):
-        return self.email != other.email
+        return self.username != other.username
 
     def save(self, *args, **kwargs):
         if not self.initialized and self.drawn_number:
